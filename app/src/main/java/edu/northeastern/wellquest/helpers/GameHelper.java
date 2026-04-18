@@ -96,10 +96,47 @@ public class GameHelper {
             if (guildId != null && !guildId.isEmpty()) {
                 int damage = calculateDamage(steps);
                 if (damage > 0) {
-                    getDB().child("guilds").child(guildId).child("currentGuildDamage").setValue(ServerValue.increment(damage));
+                    DatabaseReference guildRef = getDB().child("guilds").child(guildId);
+                    guildRef.get().addOnSuccessListener(guildSnapshot -> {
+                        int currentDmg = guildSnapshot.child("currentGuildDamage").getValue(Integer.class) != null 
+                            ? guildSnapshot.child("currentGuildDamage").getValue(Integer.class) : 0;
+                        int bossHP = guildSnapshot.child("bossHealth").getValue(Integer.class) != null 
+                            ? guildSnapshot.child("bossHealth").getValue(Integer.class) : 10000;
+                        
+                        int newTotalDmg = currentDmg + damage;
+                        
+                        if (newTotalDmg >= bossHP) {
+                            // Boss defeated!
+                            handleBossDefeat(guildId, bossHP);
+                        } else {
+                            guildRef.child("currentGuildDamage").setValue(ServerValue.increment(damage));
+                        }
+                    });
                 }
             }
         }).addOnFailureListener(e -> Log.e(TAG, "Failed to update steps", e));
+    }
+
+    private static void handleBossDefeat(String guildId, int oldMax) {
+        DatabaseReference guildRef = getDB().child("guilds").child(guildId);
+        
+        Map<String, Object> reset = new HashMap<>();
+        reset.put("currentGuildDamage", 0);
+        int newMax = (int)(oldMax * 1.5); // Next boss is 50% tougher
+        reset.put("bossHealth", newMax);
+        reset.put("bossMaxHealth", newMax);
+        
+        guildRef.updateChildren(reset);
+        
+        // Reward all guild members with massive XP
+        guildRef.child("members").get().addOnSuccessListener(snapshot -> {
+            for (DataSnapshot member : snapshot.getChildren()) {
+                String memberId = member.getKey();
+                if (memberId != null) {
+                    getDB().child("users").child(memberId).child("xp").setValue(ServerValue.increment(1000));
+                }
+            }
+        });
     }
 
     public static void addWater(int cups) {
