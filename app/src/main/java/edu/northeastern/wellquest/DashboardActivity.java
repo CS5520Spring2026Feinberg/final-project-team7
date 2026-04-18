@@ -84,7 +84,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         btnGuild.setOnClickListener(v -> {
-            Toast.makeText(this, "Guild coming soon!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, GuildActivity.class));
         });
 
         btnProfile.setOnClickListener(v -> {

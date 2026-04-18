@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WellQuest">
         <activity
+            android:name=".GuildActivity"
+            android:exported="false" />
+        <activity
             android:name=".HydrationActivity"
             android:exported="false" />
         <activity

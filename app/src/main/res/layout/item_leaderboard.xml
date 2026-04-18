@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="#1E1E1E"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/tv_member_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="PlayerName"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_member_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lvl 1"
+        android:textColor="#FFC107"
+        android:textSize="16sp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/tv_member_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Steps: 0"
+        android:textColor="#4CAF50"
+        android:textSize="16sp" />
+</LinearLayout>
