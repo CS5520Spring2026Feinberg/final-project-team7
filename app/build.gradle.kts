@@ -1,17 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
     namespace = "edu.northeastern.wellquest"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "edu.northeastern.wellquest"
         minSdk = 27
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -38,6 +37,26 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.cardview)
+    implementation(libs.recyclerview)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.auth)
+
+    // Location
+    implementation(libs.play.services.location)
+
+    // Charts
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // Image Loading
+    implementation(libs.glide)
+
+    // Animations
+    implementation(libs.lottie)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
