@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="primary">#FF6200</color>
+    <color name="primary_dark">#CC4E00</color>
+    <color name="accent">#FFB74D</color>
+    <color name="background_dark">#1A1A2E</color>
+    <color name="surface_dark">#16213E</color>
+    <color name="card_dark">#0F3460</color>
+    <color name="text_primary">#EAEAEA</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="health_red">#E53935</color>
+    <color name="mana_blue">#42A5F5</color>
+    <color name="xp_gold">#FFD740</color>
+    <color name="streak_orange">#FF7043</color>
+    <color name="hydration_cyan">#26C6DA</color>
+    <color name="guild_purple">#AB47BC</color>
+    <color name="success_green">#66BB6A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

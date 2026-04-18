@@ -1,3 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WellQuest</string>
+    <string name="welcome_title">WellQuest</string>
+    <string name="welcome_subtitle">Level up your life</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="username_hint">Enter username</string>
+    <string name="email_hint">Enter email</string>
+    <string name="password_hint">Enter password</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="step_battler">Step Battler</string>
+    <string name="hydration">Hydration</string>
+    <string name="guild">Guild</string>
+    <string name="profile">Profile</string>
+    <string name="about">About</string>
+    <string name="logout">Logout</string>
+    <string name="reset">Reset</string>
+    <string name="level">Level %d</string>
+    <string name="xp_format">%d / %d XP</string>
+    <string name="health_format">HP: %d / %d</string>
+    <string name="mana_format">Mana: %d / %d</string>
+    <string name="steps_today">Steps Today: %d</string>
+    <string name="distance_format">%.1f km</string>
+    <string name="streak_format">%d Day Streak</string>
+    <string name="water_format">%d / %d cups</string>
+    <string name="damage_format">%d DMG</string>
+    <string name="team_members">Team Members</string>
+    <string name="dinesh">Dinesh Bachchani</string>
+    <string name="saravjit">Saravjit Singh</string>
+    <string name="ratan">Ratan Pyla</string>
+    <string name="group_name">Group 7</string>
 </resources>
