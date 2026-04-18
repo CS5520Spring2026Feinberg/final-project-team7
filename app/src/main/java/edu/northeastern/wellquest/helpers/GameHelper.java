@@ -15,7 +15,9 @@ import java.util.Map;
 public class GameHelper {
 
     private static final String TAG = "GameHelper";
-    private static final DatabaseReference DB = FirebaseDatabase.getInstance().getReference();
+    private static DatabaseReference getDB() {
+        return FirebaseDatabase.getInstance().getReference();
+    }
 
     public static String getCurrentUserId() {
         return FirebaseAuth.getInstance().getCurrentUser() != null
@@ -26,7 +28,7 @@ public class GameHelper {
     public static DatabaseReference getUserRef() {
         String uid = getCurrentUserId();
         if (uid == null) return null;
-        return DB.child("users").child(uid);
+        return getDB().child("users").child(uid);
     }
 
     public static void addXp(int amount) {
@@ -94,7 +96,7 @@ public class GameHelper {
             if (guildId != null && !guildId.isEmpty()) {
                 int damage = calculateDamage(steps);
                 if (damage > 0) {
-                    DB.child("guilds").child(guildId).child("currentGuildDamage").setValue(ServerValue.increment(damage));
+                    getDB().child("guilds").child(guildId).child("currentGuildDamage").setValue(ServerValue.increment(damage));
                 }
             }
         }).addOnFailureListener(e -> Log.e(TAG, "Failed to update steps", e));
@@ -145,7 +147,7 @@ public class GameHelper {
         String uid = getCurrentUserId();
         if (uid == null || guildName == null || guildName.trim().isEmpty()) return;
 
-        DatabaseReference newGuildRef = DB.child("guilds").push();
+        DatabaseReference newGuildRef = getDB().child("guilds").push();
         String guildId = newGuildRef.getKey();
         if (guildId == null) return;
 
@@ -159,7 +161,7 @@ public class GameHelper {
         String uid = getCurrentUserId();
         if (uid == null || guildId == null || guildId.isEmpty()) return;
 
-        DB.child("guilds").child(guildId).child("members").child(uid).setValue(true)
+        getDB().child("guilds").child(guildId).child("members").child(uid).setValue(true)
             .addOnSuccessListener(aVoid -> {
                 DatabaseReference userRef = getUserRef();
                 if (userRef != null) {
@@ -172,7 +174,7 @@ public class GameHelper {
         String uid = getCurrentUserId();
         if (uid == null || guildId == null || guildId.isEmpty()) return;
 
-        DB.child("guilds").child(guildId).child("members").child(uid).removeValue()
+        getDB().child("guilds").child(guildId).child("members").child(uid).removeValue()
             .addOnSuccessListener(aVoid -> {
                 DatabaseReference userRef = getUserRef();
                 if (userRef != null) {
