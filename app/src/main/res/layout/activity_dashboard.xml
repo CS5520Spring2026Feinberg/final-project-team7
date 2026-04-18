@@ -37,39 +37,66 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Avatar Section -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_avatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/surface_dark"
+            app:cardCornerRadius="60dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_dashboard_username">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/hero_warrior" />
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/tv_dashboard_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Level 1"
+            android:layout_marginTop="8dp"
+            android:text="Level 1 Warrior"
             android:textColor="@color/text_secondary"
             android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_dashboard_username" />
+            app:layout_constraintTop_toBottomOf="@id/card_avatar" />
 
         <TextView
             android:id="@+id/tv_dashboard_streak"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="0 Day Streak"
             android:textColor="@color/streak_orange"
             android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_dashboard_level"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_dashboard_level" />
 
         <!-- XP Bar -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_xp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             app:cardBackgroundColor="@color/surface_dark"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_dashboard_level">
+            app:layout_constraintTop_toBottomOf="@id/tv_dashboard_streak">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -94,7 +121,6 @@
                     android:layout_marginTop="8dp"
                     android:max="100"
                     android:progress="0"
-                    android:progressDrawable="@android:drawable/progress_horizontal"
                     android:progressTint="@color/xp_gold"
                     android:progressBackgroundTint="@color/card_dark"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,7 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView tvUsername, tvLevel, tvXp, tvHealth, tvMana, tvSteps, tvStreak;
     private ProgressBar pbXp, pbHealth, pbMana;
     private Button btnStepBattler, btnHydration, btnGuild, btnProfile, btnAbout, btnLogout;
+    private LottieAnimationView lottieAvatar;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mUserRef;
@@ -59,6 +61,7 @@ public class DashboardActivity extends AppCompatActivity {
         btnProfile = findViewById(R.id.btn_profile);
         btnAbout = findViewById(R.id.btn_about);
         btnLogout = findViewById(R.id.btn_logout);
+        lottieAvatar = findViewById(R.id.lottie_avatar);
 
         loadUserData();
 
@@ -108,7 +111,13 @@ public class DashboardActivity extends AppCompatActivity {
                 int xpForNextLevel = level * 100;
 
                 tvUsername.setText(username != null ? username : "Hero");
-                tvLevel.setText(String.format(getString(R.string.level), level));
+
+                // Dynamic Level Title
+                String title = "Warrior";
+                if (level >= 10) title = "Paladin";
+                else if (level >= 5) title = "Knight";
+
+                tvLevel.setText(String.format("Level %d %s", level, title));
                 tvXp.setText(String.format(getString(R.string.xp_format), xp, xpForNextLevel));
                 tvHealth.setText(String.format(getString(R.string.health_format), health, maxHealth));
                 tvMana.setText(String.format(getString(R.string.mana_format), mana, maxMana));
@@ -121,6 +130,9 @@ public class DashboardActivity extends AppCompatActivity {
                 pbHealth.setProgress(health);
                 pbMana.setMax(maxMana);
                 pbMana.setProgress(mana);
+
+                // Update Avatar based on level (Visual Evolution)
+                updateAvatar(level);
             }
 
             @Override
@@ -128,5 +140,18 @@ public class DashboardActivity extends AppCompatActivity {
                 Toast.makeText(DashboardActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updateAvatar(int level) {
+        // Logic to switch between different avatar animations as the player levels up
+        // These raw resources should be added to the project
+        if (level >= 10) {
+            // lottieAvatar.setAnimation(R.raw.hero_paladin);
+        } else if (level >= 5) {
+            // lottieAvatar.setAnimation(R.raw.hero_knight);
+        } else {
+            // lottieAvatar.setAnimation(R.raw.hero_warrior);
+        }
+        lottieAvatar.playAnimation();
     }
 }
