@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WellQuest">
         <activity
+            android:name=".HydrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".StepBattlerActivity"
             android:exported="false" />
         <activity
@@ -39,9 +45,6 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".StepBattlerActivity"
             android:exported="false" />
     </application>
 

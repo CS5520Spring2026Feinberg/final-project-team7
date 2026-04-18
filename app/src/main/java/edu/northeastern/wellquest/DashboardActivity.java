@@ -77,7 +77,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         btnHydration.setOnClickListener(v -> {
-            Toast.makeText(this, "Hydration coming soon!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, HydrationActivity.class));
         });
 
         btnGuild.setOnClickListener(v -> {
@@ -85,7 +85,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         btnProfile.setOnClickListener(v -> {
-            Toast.makeText(this, "Profile coming soon!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ProfileActivity.class));
         });
     }
 
