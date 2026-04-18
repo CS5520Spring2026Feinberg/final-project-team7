@@ -146,11 +146,11 @@ public class DashboardActivity extends AppCompatActivity {
         // Logic to switch between different avatar animations as the player levels up
         // These raw resources should be added to the project
         if (level >= 10) {
-            // lottieAvatar.setAnimation(R.raw.hero_paladin);
+            lottieAvatar.setAnimation(R.raw.hero_paladin);
         } else if (level >= 5) {
-            // lottieAvatar.setAnimation(R.raw.hero_knight);
+            lottieAvatar.setAnimation(R.raw.hero_knight);
         } else {
-            // lottieAvatar.setAnimation(R.raw.hero_warrior);
+            lottieAvatar.setAnimation(R.raw.hero_warrior);
         }
         lottieAvatar.playAnimation();
     }

@@ -28,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:lottie_rawRes="@raw/potion_drink"
         app:lottie_autoPlay="true"
         app:lottie_loop="true" />
 
