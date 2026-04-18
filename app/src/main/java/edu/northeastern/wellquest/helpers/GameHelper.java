@@ -88,6 +88,15 @@ public class GameHelper {
             // Log history using ServerValue.increment for atomicity
             DatabaseReference historyRef = userRef.child("history").child(today);
             historyRef.child("steps").setValue(ServerValue.increment(steps));
+
+            // Update Guild Raid Boss Damage
+            String guildId = snapshot.child("guildId").getValue(String.class);
+            if (guildId != null && !guildId.isEmpty()) {
+                int damage = calculateDamage(steps);
+                if (damage > 0) {
+                    DB.child("guilds").child(guildId).child("currentGuildDamage").setValue(ServerValue.increment(damage));
+                }
+            }
         }).addOnFailureListener(e -> Log.e(TAG, "Failed to update steps", e));
     }
 
