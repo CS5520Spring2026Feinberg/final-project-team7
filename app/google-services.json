@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "337540830396",
+    "project_id": "wellquest-6cf58",
+    "storage_bucket": "wellquest-6cf58.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337540830396:android:c4c1784c5bd544a282ecb9",
+        "android_client_info": {
+          "package_name": "edu.northeastern.wellquest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ_pg1jYn2VX1CAsY5Zij38SovccO0bD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
