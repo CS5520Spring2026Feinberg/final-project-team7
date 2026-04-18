@@ -129,4 +129,46 @@ public class GameHelper {
         // Base damage logic: 10 steps = 1 damage, minimum 1
         return Math.max(1, steps / 10);
     }
+
+    // --- Guild Methods ---
+
+    public static void createGuild(String guildName) {
+        String uid = getCurrentUserId();
+        if (uid == null || guildName == null || guildName.trim().isEmpty()) return;
+
+        DatabaseReference newGuildRef = DB.child("guilds").push();
+        String guildId = newGuildRef.getKey();
+        if (guildId == null) return;
+
+        edu.northeastern.wellquest.models.Guild newGuild = new edu.northeastern.wellquest.models.Guild(guildId, guildName.trim(), uid);
+        newGuildRef.setValue(newGuild).addOnSuccessListener(aVoid -> {
+            joinGuild(guildId);
+        });
+    }
+
+    public static void joinGuild(String guildId) {
+        String uid = getCurrentUserId();
+        if (uid == null || guildId == null || guildId.isEmpty()) return;
+
+        DB.child("guilds").child(guildId).child("members").child(uid).setValue(true)
+            .addOnSuccessListener(aVoid -> {
+                DatabaseReference userRef = getUserRef();
+                if (userRef != null) {
+                    userRef.child("guildId").setValue(guildId);
+                }
+            });
+    }
+
+    public static void leaveGuild(String guildId) {
+        String uid = getCurrentUserId();
+        if (uid == null || guildId == null || guildId.isEmpty()) return;
+
+        DB.child("guilds").child(guildId).child("members").child(uid).removeValue()
+            .addOnSuccessListener(aVoid -> {
+                DatabaseReference userRef = getUserRef();
+                if (userRef != null) {
+                    userRef.child("guildId").setValue("");
+                }
+            });
+    }
 }
