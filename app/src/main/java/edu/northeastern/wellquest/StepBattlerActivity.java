@@ -18,12 +18,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import edu.northeastern.wellquest.helpers.GameHelper;
 
@@ -32,6 +30,7 @@ public class StepBattlerActivity extends AppCompatActivity implements SensorEven
     private TextView tvMonsterName, tvMonsterHealth, tvDamageDealt, tvStepCount, tvXpReward;
     private ProgressBar pbMonsterHealth;
     private Button btnNewMonster;
+    private LottieAnimationView lottieMonster;
 
     private SensorManager sensorManager;
     private Sensor stepSensor;
@@ -94,6 +93,7 @@ public class StepBattlerActivity extends AppCompatActivity implements SensorEven
         tvXpReward = findViewById(R.id.tv_xp_reward);
         pbMonsterHealth = findViewById(R.id.pb_monster_health);
         btnNewMonster = findViewById(R.id.btn_new_monster);
+        lottieMonster = findViewById(R.id.lottieMonster);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
@@ -161,6 +161,9 @@ public class StepBattlerActivity extends AppCompatActivity implements SensorEven
                 updateMonsterUI();
                 updateStepUI();
 
+                // Play "damage" effect
+                lottieMonster.playAnimation();
+
                 GameHelper.addSteps(stepsSinceLastUpdate);
 
                 if (monsterHealth <= 0) {
@@ -180,6 +183,7 @@ public class StepBattlerActivity extends AppCompatActivity implements SensorEven
         tvMonsterName.setText(monsterName + " DEFEATED!");
         tvDamageDealt.setText("Victory! +" + monsterXpReward + " XP");
         btnNewMonster.setEnabled(true);
+        lottieMonster.pauseAnimation();
 
         if (mUserRef != null) {
             mUserRef.child("monstersDefeated").get().addOnSuccessListener(snapshot -> {
@@ -198,6 +202,7 @@ public class StepBattlerActivity extends AppCompatActivity implements SensorEven
         totalDamageDealt = 0;
         btnNewMonster.setEnabled(false);
         updateMonsterUI();
+        lottieMonster.resumeAnimation();
     }
 
     private void updateMonsterUI() {
