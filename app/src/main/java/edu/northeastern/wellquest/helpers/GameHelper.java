@@ -3,8 +3,12 @@ package edu.northeastern.wellquest.helpers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class GameHelper {
@@ -62,6 +66,8 @@ public class GameHelper {
         DatabaseReference userRef = getUserRef();
         if (userRef == null) return;
 
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
         userRef.get().addOnSuccessListener(snapshot -> {
             int currentSteps = snapshot.child("stepsToday").getValue(Integer.class) != null ? snapshot.child("stepsToday").getValue(Integer.class) : 0;
             int currentTotal = snapshot.child("totalSteps").getValue(Integer.class) != null ? snapshot.child("totalSteps").getValue(Integer.class) : 0;
@@ -69,14 +75,20 @@ public class GameHelper {
             Map<String, Object> updates = new HashMap<>();
             updates.put("stepsToday", currentSteps + steps);
             updates.put("totalSteps", currentTotal + steps);
-
+            
             userRef.updateChildren(updates);
+            
+            // Log history
+            DatabaseReference historyRef = userRef.child("history").child(today);
+            historyRef.child("steps").setValue(ServerValue.increment(steps));
         });
     }
 
     public static void addWater(int cups) {
         DatabaseReference userRef = getUserRef();
         if (userRef == null) return;
+
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         userRef.get().addOnSuccessListener(snapshot -> {
             int currentCups = snapshot.child("waterCups").getValue(Integer.class) != null ? snapshot.child("waterCups").getValue(Integer.class) : 0;
@@ -92,6 +104,10 @@ public class GameHelper {
             updates.put("mana", newMana);
 
             userRef.updateChildren(updates);
+            
+            // Log history
+            DatabaseReference historyRef = userRef.child("history").child(today);
+            historyRef.child("water").setValue(ServerValue.increment(cups));
 
             addXp(cups * 5);
         });
