@@ -73,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         btnStepBattler.setOnClickListener(v -> {
-            Toast.makeText(this, "Step Battler coming soon!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, StepBattlerActivity.class));
         });
 
         btnHydration.setOnClickListener(v -> {
