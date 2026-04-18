@@ -1,5 +1,6 @@
 package edu.northeastern.wellquest.helpers;
 
+import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 public class GameHelper {
 
+    private static final String TAG = "GameHelper";
     private static final DatabaseReference DB = FirebaseDatabase.getInstance().getReference();
 
     public static String getCurrentUserId() {
@@ -32,39 +34,44 @@ public class GameHelper {
         if (userRef == null) return;
 
         userRef.get().addOnSuccessListener(snapshot -> {
+            if (!snapshot.exists()) return;
+
             int currentXp = snapshot.child("xp").getValue(Integer.class) != null ? snapshot.child("xp").getValue(Integer.class) : 0;
             int currentLevel = snapshot.child("level").getValue(Integer.class) != null ? snapshot.child("level").getValue(Integer.class) : 1;
-            int maxHealth = snapshot.child("maxHealth").getValue(Integer.class) != null ? snapshot.child("maxHealth").getValue(Integer.class) : 100;
-            int maxMana = snapshot.child("maxMana").getValue(Integer.class) != null ? snapshot.child("maxMana").getValue(Integer.class) : 50;
+            int health = snapshot.child("health").getValue(Integer.class) != null ? snapshot.child("health").getValue(Integer.class) : 100;
+            int mana = snapshot.child("mana").getValue(Integer.class) != null ? snapshot.child("mana").getValue(Integer.class) : 50;
 
-            int newXp = currentXp + amount;
-            int xpForNextLevel = currentLevel * 100;
+            int totalXp = currentXp + amount;
+            int newLevel = currentLevel;
+
+            // Calculate multi-level ups
+            while (totalXp >= (newLevel * 100)) {
+                totalXp -= (newLevel * 100);
+                newLevel++;
+            }
 
             Map<String, Object> updates = new HashMap<>();
-
-            if (newXp >= xpForNextLevel) {
-                int newLevel = currentLevel + 1;
-                int leftoverXp = newXp - xpForNextLevel;
+            if (newLevel > currentLevel) {
                 int newMaxHealth = 100 + (newLevel - 1) * 10;
                 int newMaxMana = 50 + (newLevel - 1) * 5;
 
                 updates.put("level", newLevel);
-                updates.put("xp", leftoverXp);
+                updates.put("xp", totalXp);
                 updates.put("maxHealth", newMaxHealth);
-                updates.put("health", newMaxHealth);
+                updates.put("health", newMaxHealth); // Full heal on level up
                 updates.put("maxMana", newMaxMana);
-                updates.put("mana", newMaxMana);
+                updates.put("mana", newMaxMana);     // Full mana on level up
             } else {
-                updates.put("xp", newXp);
+                updates.put("xp", totalXp);
             }
 
-            userRef.updateChildren(updates);
-        });
+            userRef.updateChildren(updates).addOnFailureListener(e -> Log.e(TAG, "Failed to update XP", e));
+        }).addOnFailureListener(e -> Log.e(TAG, "Failed to fetch user for XP update", e));
     }
 
     public static void addSteps(int steps) {
         DatabaseReference userRef = getUserRef();
-        if (userRef == null) return;
+        if (userRef == null || steps <= 0) return;
 
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -78,15 +85,15 @@ public class GameHelper {
             
             userRef.updateChildren(updates);
             
-            // Log history
+            // Log history using ServerValue.increment for atomicity
             DatabaseReference historyRef = userRef.child("history").child(today);
             historyRef.child("steps").setValue(ServerValue.increment(steps));
-        });
+        }).addOnFailureListener(e -> Log.e(TAG, "Failed to update steps", e));
     }
 
     public static void addWater(int cups) {
         DatabaseReference userRef = getUserRef();
-        if (userRef == null) return;
+        if (userRef == null || cups <= 0) return;
 
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -105,21 +112,21 @@ public class GameHelper {
 
             userRef.updateChildren(updates);
             
-            // Log history
             DatabaseReference historyRef = userRef.child("history").child(today);
             historyRef.child("water").setValue(ServerValue.increment(cups));
 
-            addXp(cups * 5);
-        });
+            addXp(cups * 5); // Water gives small amount of XP
+        }).addOnFailureListener(e -> Log.e(TAG, "Failed to update water", e));
     }
 
     public static void updateStreak(int streak) {
         DatabaseReference userRef = getUserRef();
         if (userRef == null) return;
-        userRef.child("streak").setValue(streak);
+        userRef.child("streak").setValue(streak).addOnFailureListener(e -> Log.e(TAG, "Failed to update streak", e));
     }
 
     public static int calculateDamage(int steps) {
-        return steps / 10;
+        // Base damage logic: 10 steps = 1 damage, minimum 1
+        return Math.max(1, steps / 10);
     }
 }
